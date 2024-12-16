@@ -95,27 +95,38 @@
         showUncompleted.id = "btn-unc";
         showUncompleted.textContent = "Показать не завершённые задачи";
         showUncompleted.style.width = "75%";
-        showUncompleted.addEventListener("click", showUncompl);
-
+        showUncompleted.addEventListener("click", showUncompletedTasks);
+        
         let showAll = document.createElement("button");
         showAll.id = "btn-all";
         showAll.textContent = "Показать все";
+        showAll.addEventListener("click", showAllTasks);
 
         let panel = document.querySelector(".input-panel");
         panel.insertAdjacentElement("afterbegin", showAll);
         panel.insertAdjacentElement("afterbegin", showUncompleted);
 
-        function showUncompl() {
-            for (let i = 0; i < taskList.children.length; i++) {
-                if (taskList.children[i].classList.contains("task"))
-                    taskList.children[i].remove();
+        let tsk = taskList.children;
+
+        function showUncompletedTasks() {
+            while (tsk.length > 1) {
+                tsk[1].remove();
+            }
+            
+            for (const task of tasks) {
+                if (!task.isDone) {
+                    taskList.append(task.div);
+                }
+            }
+        }
+
+        function showAllTasks() {
+            while (tsk.length > 1) {
+                tsk[1].remove();
             }
 
-            for (const task in tasks) {
-                if (!task.isDone) {
-                    let newTask = new Task("task.value");
-                    newTask.createIn(taskList);
-                }
+            for (const task of tasks) {
+                taskList.append(task.div);
             }
         }
 
